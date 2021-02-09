@@ -4,7 +4,7 @@ mainClock = pygame.time.Clock()
 from pygame.locals import *
 pygame.init()
 pygame.display.set_caption('Quick Start')
-window_surface = pygame.display.set_mode((500, 500),0,32)
+window_surface = pygame.display.set_mode((500, 500))
 
 font = pygame.font.SysFont(None, 20)
 # background = pygame.Surface((800, 600))
@@ -25,8 +25,8 @@ while is_running:
 
     button_1 = pygame.Rect(50, 100, 200, 50)
     button_2 = pygame.Rect(50, 200, 200, 50)
-    pygame.draw.rect(window_surface, (255,0,0), button_1)
-    pygame.draw.rect(window_surface, (255,0,0), button_2)
+    pygame.draw.rect(window_surface, (255,69,48), button_1)
+    pygame.draw.rect(window_surface, (255,126,0), button_2)
     draw_text('Main Menu', font, (255, 255, 255), window_surface, 20, 20)
     # window_surface.blit(background, (0, 0))
 
