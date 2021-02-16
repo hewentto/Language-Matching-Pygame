@@ -1,6 +1,14 @@
+# %%
 import pygame
 import pygame_gui
+import pandas as pd
 
+
+d = {'english':['T-shirt','pants','skirt','socks','coat','shoes','boots','love','happy','tired','ready','box','wheel','can','wallet','screen','keyboard','bed','belt','glove','year','day','time','time(period of)','life','part','government','country','word','state','yes','no','maybe',"I don't know",'how','I','you','place','the','she'],
+'spanish':['la camiseta','los pantalones','la falda','los calcetines','el abrigo','los zapatos','las botas','amor','feliz','consado','listo','cajón','rueda','lata','billetera','pantalla','teclado','cama','cinturón','guante','año','día','vez','tiempo','vida','parte','gobierno','país','mundo','estado','si','no','talvez','nose','cómo','yo','tu','lugar','el/la','ella']}
+words = pd.DataFrame(data=d)
+
+# %%
 
 pygame.init()
 pygame.font.init() # you have to call this at the start, 
