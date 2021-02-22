@@ -1,13 +1,16 @@
 # %%
 import pygame
 import pygame_gui
-import pandas as pd
+import random
 
 
 d = {'english':['T-shirt','pants','skirt','socks','coat','shoes','boots','love','happy','tired','ready','box','wheel','can','wallet','screen','keyboard','bed','belt','glove','year','day','time','time(period of)','life','part','government','country','word','state','yes','no','maybe',"I don't know",'how','I','you','place','the','she'],
 'spanish':['la camiseta','los pantalones','la falda','los calcetines','el abrigo','los zapatos','las botas','amor','feliz','consado','listo','cajón','rueda','lata','billetera','pantalla','teclado','cama','cinturón','guante','año','día','vez','tiempo','vida','parte','gobierno','país','mundo','estado','si','no','talvez','nose','cómo','yo','tu','lugar','el/la','ella']}
-words = pd.DataFrame(data=d)
 
+
+print(random.sample(list(range(len(d['english']))), 12))
+print(d['english'][37])
+print(d['spanish'][37])
 # %%
 
 pygame.init()
@@ -41,7 +44,74 @@ pygame.mixer.music.set_volume(0.06)
 pygame.mixer.music.play(-1)
 
 
+class word:
+    def __init__(self, palabra, cosa, x, y):
+        self.palabra = palabra
+        self.cosa = cosa
+        self.x = x
+        self.y = y
+        self.vx = 0
+        self.vy = 0
+    def draw(self):
+        thing = pygame.font.SysFont('Cooper Black', 20).render(self.palabra, False, (105,105,105))
+        self.cosa.blit(thing, (self.x, self.y))
+    def mover(self):
+        self.x += self.vx
+        self.y += self.vy
 
+def comienzo():
+    global palabra
+    palabra = word("happy", window_surface, 50, 100)
+    palabra.vx = 3
+    palabra.vy = 3
+    global matching
+    matching = word("feliz", window_surface, 0, 0)
+    matching.vx = 4
+    matching.vy = 5
+    clock = pygame.time.Clock()
+    running = True
+    while running:
+        clock.tick(40)
+        window_surface.fill((0,0,0))
+        for event in pygame.event.get():
+            if event.type == pygame.KEYDOWN:
+                if event.key == pygame.K_1:
+                    running = False
+            elif event.type == pygame.QUIT:
+                pygame.quit()
+                running = False
+                sys.exit()
+            manager.process_events(event)
+        palabra.mover()
+        if palabra.x >= 790:
+            palabra.vx *= -1
+            palabra.x = 790
+        if palabra.x <= 0:
+            palabra.vx *= -1
+            palabra.x = 0
+        if palabra.y >= 600:
+            palabra.vy *= -1
+            palabra.y = 600
+        if palabra.y <= 0:
+            palabra.vy *= -1
+            palabra.y = 0
+        palabra.draw()
+        matching.mover()
+        if matching.x >= 790:
+            matching.vx *= -1
+            matching.x = 790
+        if matching.x <= 0:
+            matching.vx *= -1
+            matching.x = 0
+        if matching.y >= 600:
+            matching.vy *= -1
+            matching.y = 600
+        if matching.y <= 0:
+            matching.vy *= -1
+            matching.y = 0
+        matching.draw()
+        manager.update(time_delta)
+        pygame.display.update()
 
 start_button = pygame_gui.elements.UIButton(relative_rect=pygame.Rect((330, 275), (150, 50)),
                                             text='Start!',
@@ -70,6 +140,7 @@ while is_running:
                 pygame.mixer.Sound.play(first_sound)
             if event.user_type == pygame_gui.UI_BUTTON_PRESSED:
                 if event.ui_element == start_button:
+                    comienzo()
                     print('Start the Game!')
                 if event.ui_element == show_words_button:
                     print('I will show you the words!')
