@@ -4,35 +4,28 @@ import pygame_gui
 import random
 
 
-d = {'english':['T-shirt','pants','skirt','socks','coat','shoes','boots','love','happy','tired','ready','box','wheel','can','wallet','screen','keyboard','bed','belt','glove','year','day','time','time(period of)','life','part','government','country','word','state','yes','no','maybe',"I don't know",'how','I','you','place','the','she'],
-'spanish':['la camiseta','los pantalones','la falda','los calcetines','el abrigo','los zapatos','las botas','amor','feliz','consado','listo','cajón','rueda','lata','billetera','pantalla','teclado','cama','cinturón','guante','año','día','vez','tiempo','vida','parte','gobierno','país','mundo','estado','si','no','talvez','nose','cómo','yo','tu','lugar','el/la','ella']}
-
-
-randomSample = random.sample(list(range(len(d['english']))), 12)
-
-
-
 pygame.init()
 pygame.font.init() # you have to call this at the start, 
                    # if you want to use this module.
+
+
 # myfont = pygame.font.SysFont('jokerman', 65) #jokerman, showcardgothic, magneto, franklingothicheavy, impact
 
 titleFont = pygame.font.SysFont('Cooper Black', 65)
 
-pygame.display.set_caption('Quick Start')
-window_surface = pygame.display.set_mode((800, 600),0,32)
-gameTitle = titleFont.render('Spanglish Matching!', False, (0, 0, 0))
+width = 800
 
-# background = pygame.Surface((800, 600))
-# background.fill(pygame.Color('#33FFFF'))
+pygame.display.set_caption('Quick Start')
+window_surface = pygame.display.set_mode((width, 600),0,32)
+gameTitle = titleFont.render('Spanglish Matching!', False, (0, 0, 0))
 
 #Denis Changes
 bg_img = pygame.image.load('worldmap1024.jpg')
-bg = pygame.transform.scale(bg_img, (800, 600))
+bg = pygame.transform.scale(bg_img, (width, 600))
 
 ####
 
-manager = pygame_gui.UIManager((800, 600))
+mainScreenManager = pygame_gui.UIManager((width, 600))
 first_sound = pygame.mixer.Sound("crash.mp3")
 
 backgroundMusic = pygame.mixer.music.load("background.mp3")
@@ -56,11 +49,9 @@ class word:
         self.y += self.vy
 
 def comienzo():
-    global palabra
     palabra = word("happy", window_surface, 50, 100)
     palabra.vx = 3
     palabra.vy = 3
-    global matching
     matching = word("feliz", window_surface, 0, 0)
     matching.vx = 4
     matching.vy = 5
@@ -77,7 +68,6 @@ def comienzo():
                 pygame.quit()
                 running = False
                 exit(0)
-            manager.process_events(event)
         palabra.mover()
         if palabra.x >= 790:
             palabra.vx *= -1
@@ -106,124 +96,214 @@ def comienzo():
             matching.vy *= -1
             matching.y = 0
         matching.draw()
-        manager.update(time_delta)
         pygame.display.update()
 
 
-def display_study_words():
+def display_study_words(engSpanDict,randomSample):
+
+    # Header font is bigger
     headerFont = pygame.font.SysFont('Cooper Black', 60)
+
+    # Every word that's not header
     studyFont = pygame.font.SysFont('Cooper Black', 40)
-    studyManager = pygame_gui.UIManager((800, 600))
+
+    #Separate manager for study words screen
+    studyManager = pygame_gui.UIManager((width, 600))
+
+    # Clock needed to update manager (don't know why.)
     clock = pygame.time.Clock()
 
+    #Back to the main screen
     back_button = pygame_gui.elements.UIButton(relative_rect=pygame.Rect((50, 545), (150, 50)),
                                             text='Back',
+                                            #Study manager
                                             manager=studyManager)
 
+    #Start the game from the study page
     start_from_study_button = pygame_gui.elements.UIButton(relative_rect=pygame.Rect((530, 545), (150, 50)),
                                             text='Start',
+                                            #Study manager
                                             manager=studyManager)
 
+    #Initialize english/spanish lists
     englishWords=[]
     spanishWords=[]
 
+    #Generate english/spanish lists, with corresponding indeces
     for x in randomSample:
-        englishWords.append(studyFont.render(d['english'][x], False, (0, 0, 0)))
-        spanishWords.append(studyFont.render(d['spanish'][x], False, (0, 0, 0)))
+        englishWords.append(studyFont.render(engSpanDict['english'][x], False, (0, 0, 0)))
+        spanishWords.append(studyFont.render(engSpanDict['spanish'][x], False, (0, 0, 0)))
 
     while True:
         time_delta = clock.tick(60)/1000.0
+
+        #Make the screen white
         window_surface.fill((255,255,255))
 
+        #Needed (but don't know why)
         for event in pygame.event.get():
+            #'X' top right closes game
             if event.type == pygame.QUIT:
-                pygame.quit()
+                #Exit the program
+                exit(0)
+ 
+            #Check if something we created is processed
             if event.type == pygame.USEREVENT:
+
+                #If button is pressed
                 if event.user_type == pygame_gui.UI_BUTTON_PRESSED:
+
+                    #Back button
                     if event.ui_element == back_button:
+                        #Exit out of this function, returns to where it was called, which is in mainScreen.
                         return
+
+                    #Start button
                     if event.ui_element == start_from_study_button:
+                        #Start the game
                         comienzo()
+
+            #Update studyManager
             studyManager.process_events(event)
 
+        #Display English header
         window_surface.blit(headerFont.render('English', False, (0, 0, 0)),(95, -10))
+
+        #Display separating pipes
         window_surface.blit(studyFont.render('|', False, (0, 0, 0)),(390, 0))
+        #Overlap to look clean
         window_surface.blit(studyFont.render('|', False, (0, 0, 0)),(390, 20))
+
+        #Display Spanish header
         window_surface.blit(headerFont.render('Spanish', False, (0, 0, 0)),(515, -10))
+
+        #Display separating rows
         window_surface.blit(studyFont.render('________________________________', False, (0, 0, 0)),(75, 8))
+
+        #First word starts at height 50
         wordHeight = 50
         for x in range(len(randomSample)):
+            #English word
             window_surface.blit(englishWords[x],(95, wordHeight))
+
+            #Separating rows
             window_surface.blit(studyFont.render('________________________________', False, (0, 0, 0)),(75, wordHeight))
+
+            #Separating columns
             window_surface.blit(studyFont.render('|',False,(0,0,0)),(390, wordHeight))
             window_surface.blit(studyFont.render('|',False,(0,0,0)),(390, wordHeight+20))
+
+            #Spanish word
             window_surface.blit(spanishWords[x],(515, wordHeight))
+
+            #Update wordHeight
             wordHeight += 40
 
+        #Update manager (for the buttons)
         studyManager.update(time_delta)
+        #Display buttons
         studyManager.draw_ui(window_surface)
+
+        #Update the display of the pygame
         pygame.display.update()
 
 
-def main():
+def mainScreen():
+
+    d = {'english':['T-shirt','pants','skirt','socks','coat','shoes','boots',
+                    'love','happy','tired','ready','box','wheel','can','wallet',
+                    'screen','keyboard','bed','belt','glove','year','day','time',
+                    'time(period of)','life','part','government','country','word',
+                    'state','yes','no','maybe',"I don't know",'how','I','you',
+                    'place','the','she'],
+    'spanish':['la camiseta','los pantalones','la falda','los calcetines','el abrigo',
+                'los zapatos','las botas','amor','feliz','consado','listo','cajón','rueda','lata',
+                'billetera','pantalla','teclado','cama','cinturón','guante','año','día','vez',
+                'tiempo','vida','parte','gobierno','país','mundo','estado','si','no','talvez',
+                'nose','cómo','yo','tu','lugar','el/la','ella']}
+
+
+    # Select 12 indeces for english and spanish words
+    randomSample = random.sample(list(range(len(d['english']))), 12)
 
     start_button = pygame_gui.elements.UIButton(relative_rect=pygame.Rect((330, 275), (150, 50)),
                                                 text='Start!',
-                                                manager=manager)
+                                                #Place it in main manager
+                                                manager=mainScreenManager)
 
     show_words_button = pygame_gui.elements.UIButton(relative_rect=pygame.Rect((330, 375), (150, 50)),
                                                 text='Study Words',
-                                                manager=manager)
+                                                #Place it in main manager
+                                                manager=mainScreenManager)
 
     exit_button = pygame_gui.elements.UIButton(relative_rect=pygame.Rect((330, 475), (150, 50)),
                                                 text='Exit',
-                                                manager=manager)
+                                                #Place it in main manager
+                                                manager=mainScreenManager)
 
+    #Create clock
     clock = pygame.time.Clock()
     is_running = True
 
-    width = 800
+    #Background scrolling parameters
+
     i = 0
+    
     #Main game loop
     while is_running:
         time_delta = clock.tick(60)/1000.0
 
+        #Needed (but don't know why)
         for event in pygame.event.get():
+            #'X' top right closes game
             if event.type == pygame.QUIT:
                 is_running = False
 
+            #Check if something we created is processed
             if event.type == pygame.USEREVENT:
+                # Make sound when hovering over button
                 # if event.user_type == pygame_gui.UI_BUTTON_ON_HOVERED:
                 #     pygame.mixer.Sound.play(first_sound)
+
+                # If button is pressed
                 if event.user_type == pygame_gui.UI_BUTTON_PRESSED:
+                    # If start button, start
                     if event.ui_element == start_button:
                         comienzo()
+                    # If study button, study
                     if event.ui_element == show_words_button:
-                        # window_surface = pygame.display.set_mode((800, 600),0,32)
-                        display_study_words()
+                        display_study_words(d,randomSample)
+                    # If exit, exit
                     if event.ui_element == exit_button:
                         is_running = False
-
-            manager.process_events(event)
+            
+            #Process buttons
+            mainScreenManager.process_events(event)
 
 
         #Denis changes
         #Scrolling background
-
-        window_surface.fill((0,0,0))
         window_surface.blit(bg, (i, 0))
         window_surface.blit(bg, (width+i, 0))
+        #If image is at end, wrap image around
         if i == -width:
             window_surface.blit(bg, (width+i, 0))
+            #Reset i
             i = 0
+        #Decrement i
         i -= 1
         ####
 
-        #Display buttons
-        manager.update(time_delta)
         #Display title
         window_surface.blit(gameTitle,(95, 120))
-        manager.draw_ui(window_surface)
+        #Update button logic
+        mainScreenManager.update(time_delta)
+        #Display buttons
+        mainScreenManager.draw_ui(window_surface)
 
+        #Show the display
         pygame.display.update()
-main()
+
+
+#Call main
+mainScreen()
