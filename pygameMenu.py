@@ -120,7 +120,7 @@ def display_study_words(engSpanDict,randomSample):
                                             manager=studyManager)
 
     #Start the game from the study page
-    start_from_study_button = pygame_gui.elements.UIButton(relative_rect=pygame.Rect((530, 545), (150, 50)),
+    start_from_study_button = pygame_gui.elements.UIButton(relative_rect=pygame.Rect((600, 545), (150, 50)),
                                             text='Start',
                                             #Study manager
                                             manager=studyManager)
