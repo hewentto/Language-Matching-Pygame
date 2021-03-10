@@ -205,12 +205,6 @@ def comienzo():
 
 
 
-
-
-
-
-
-
 def rotate(surface, angle):
     rotated_surface = pygame.transform.rotozoom(surface, angle, 1)
     rotated_rect = rotated_surface.get_rect(center = (400, 300))
@@ -237,11 +231,6 @@ def youMatch():
 
         window_surface.blit(phrase_rotated, phrase_rotated_rect)
         pygame.display.update() 
-
-
-
-
-
 
 
 
