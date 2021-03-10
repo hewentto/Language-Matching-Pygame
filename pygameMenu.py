@@ -139,7 +139,7 @@ def comienzo():
             # Here i am attempting to see if I can match the x,y of the cursor on button press to one of the words and print the word i clicked
             elif event.type == pygame.MOUSEBUTTONDOWN:
                 for i in range(len(randomSample)):
-                    if engObjs[i].x+len(engObjs[i].word)*15 > mouse[0] > engObjs[i].x and engObjs[i].y+len(engObjs[i].word)*6  > mouse[1] > engObjs[i].y:
+                    if engObjs[i].x+len(engObjs[i].word)*15 > mouse[0] > engObjs[i].x and engObjs[i].y+len(engObjs[i].word)+30  > mouse[1] > engObjs[i].y:
                         if count % 2:
                             word=engObjs[i].word
                             clickOne=True
@@ -153,7 +153,7 @@ def comienzo():
 
                         print(engObjs[i].word)
                         count+=1
-                    if spanObjs[i].x+len(spanObjs[i].word)*15 > mouse[0] > spanObjs[i].x and spanObjs[i].y+len(spanObjs[i].word)*6 > mouse[1] > spanObjs[i].y:
+                    if spanObjs[i].x+len(spanObjs[i].word)*15 > mouse[0] > spanObjs[i].x and spanObjs[i].y+len(spanObjs[i].word)+30 > mouse[1] > spanObjs[i].y:
                         if count % 2:
                             word=spanObjs[i].word
                             clickOne=True
@@ -180,9 +180,9 @@ def comienzo():
 
 
         if clickOne and word in spanList:
-            pygame.draw.rect(window_surface, (0,255,0),(spanObjs[clickOneWord].x,spanObjs[clickOneWord].y,len(spanObjs[clickOneWord].word)*15,len(spanObjs[clickOneWord].word)*6))
+            pygame.draw.rect(window_surface, (0,255,0),(spanObjs[clickOneWord].x,spanObjs[clickOneWord].y,len(spanObjs[clickOneWord].word)*15,len(spanObjs[clickOneWord].word)+30))
         if clickOne and word in engList:
-            pygame.draw.rect(window_surface, (0,255,0),(engObjs[clickOneWord].x,engObjs[clickOneWord].y,len(engObjs[clickOneWord].word)*15,len(engObjs[clickOneWord].word)*6))
+            pygame.draw.rect(window_surface, (0,255,0),(engObjs[clickOneWord].x,engObjs[clickOneWord].y,len(engObjs[clickOneWord].word)*15,len(engObjs[clickOneWord].word)+30))
 
         # this calls the mover functions and updated draw functions of the objects every loop 
         for i in range(len(randomSample)):
