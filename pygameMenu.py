@@ -15,18 +15,19 @@ pygame.font.init() # you have to call this at the start,
 titleFont = pygame.font.SysFont('Cooper Black', 65)
 
 width = 800
+height = 600
 
 pygame.display.set_caption('Quick Start')
-window_surface = pygame.display.set_mode((width, 600),0,32)
+window_surface = pygame.display.set_mode((width, height),0,32)
 gameTitle = titleFont.render('Spanglish Matching!', False, (0, 0, 0))
 
 #Denis Changes
 bg_img = pygame.image.load('worldmap1024.jpg')
-bg = pygame.transform.scale(bg_img, (width, 600))
+bg = pygame.transform.scale(bg_img, (width, height))
 
 ####
 
-mainScreenManager = pygame_gui.UIManager((width, 600))
+mainScreenManager = pygame_gui.UIManager((width, height))
 first_sound = pygame.mixer.Sound("crash.mp3")
 
 backgroundMusic = pygame.mixer.music.load("background.mp3")
@@ -86,9 +87,9 @@ class word:
         if self.x <= 0:
             self.vx *= -1
             self.x = 0
-        if self.y >= 600:
+        if self.y >= height:
             self.vy *= -1
-            self.y = 600
+            self.y = height
         if self.y <= 0:
             self.vy *= -1
             self.y = 0
@@ -100,7 +101,7 @@ spanObjs = [word(spanList[i], window_surface) for i in range(len(spanList))]
 
 def comienzo():
 
-    gameManager = pygame_gui.UIManager((width, 600))
+    gameManager = pygame_gui.UIManager((width, height))
 
 
     back_button = pygame_gui.elements.UIButton(relative_rect=pygame.Rect((50, 545), (150, 50)),
@@ -164,7 +165,6 @@ def comienzo():
                                 # del engObjs[i]
                                 # del spanObjs[i]
                             clickOne=False
-                            # pygame.draw.rect(window_surface, (255,0,0),(spanObjs[i].x,spanObjs[i].y,len(spanObjs[i].word)*15,len(spanObjs[i].word)*6))
                         print(spanObjs[i].word)
                         count+=1
                 # print(engObjs[0].x,engObjs[0].y)#testing to see if we clicked on the word
@@ -192,7 +192,8 @@ def comienzo():
                 spanObjs[i].draw()
                 spanObjs[i].mover()
         
-
+        if len(dontShow) == len(randomSample):
+            youMatch()
 
         #Update manager (for the buttons)
         gameManager.update(time_delta)
@@ -202,6 +203,48 @@ def comienzo():
         pygame.display.update()
 
 
+
+
+
+
+
+
+
+
+def rotate(surface, angle):
+    rotated_surface = pygame.transform.rotozoom(surface, angle, 1)
+    rotated_rect = rotated_surface.get_rect(center = (400, 300))
+    return rotated_surface, rotated_rect
+
+# Phrase of Matching
+def youMatch():
+    clock = pygame.time.Clock()
+    running = True
+    size = 100
+    angle = 0
+    phrase = pygame.font.SysFont('Cooper Black', size).render("Good Job!", False, (105,105,105))
+    while running:
+        clock.tick(40)
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+               exit()
+        phrase_rect = phrase.get_rect(center = (400, 300))
+
+        angle += 1
+
+        window_surface.fill((0,0,0))
+        phrase_rotated, phrase_rotated_rect = rotate(phrase, angle)
+
+        window_surface.blit(phrase_rotated, phrase_rotated_rect)
+        pygame.display.update() 
+
+
+
+
+
+
+
+
 def display_study_words(engSpanDict,randomSample):
 
     # Header font is bigger
@@ -209,7 +252,7 @@ def display_study_words(engSpanDict,randomSample):
 
 
     #Separate manager for study words screen
-    studyManager = pygame_gui.UIManager((width, 600))
+    studyManager = pygame_gui.UIManager((width, height))
 
     # Clock needed to update manager (don't know why.)
     clock = pygame.time.Clock()
