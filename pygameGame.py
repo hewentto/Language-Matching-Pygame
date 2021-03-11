@@ -1,7 +1,7 @@
 import pygame
 import pygame_gui
-from pygame.mouse import get_pos
 import random
+from pygame.mouse import get_pos
 from pygameEndScreen import youMatch
 
 
