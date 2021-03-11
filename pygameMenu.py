@@ -50,11 +50,9 @@ d = {'english':['T-shirt','pants','skirt','socks','coat','shoes','boots',
 
 # Select 12 indeces for english and spanish words
 randomSample = random.sample(list(range(len(d['english']))), 12)
-print(list(range(len(d['english']))))
-print(randomSample)
 
 # English list, Spanish list
-engList = []
+engList  = []
 spanList = []
 
 # Every word that's not header
@@ -62,15 +60,15 @@ studyFont = pygame.font.SysFont('Cooper Black', 40)
 
 #Generate english/spanish lists, with corresponding indeces
 for x in randomSample:
-    engList.append(d['english'][x])
+    engList.append( d['english'][x])
     spanList.append(d['spanish'][x])
 
 class word:
     def __init__(self, word, screen):
         self.word = word
         self.screen = screen
-        self.x = random.randrange(1,790,1) #creates a random position for x and y within the screen range for the object
-        self.y = random.randrange(1,790,1)
+        self.x = random.randrange(20,width - 20,1) #creates a random position for x and y within the screen range for the object
+        self.y = random.randrange(20,height - 20,1)
         self.vx = random.randrange(-3,3,1) #creats random direction and speed for the object
         self.vy = random.randrange(-3,3,1)
         self.hitbox = (self.x + 17, self.y + 2, 31, 57)
@@ -96,8 +94,8 @@ class word:
 
 
 #  I created 2 lists of objects, one in spanish and one in english 
-engObjs = [word(engList[i], window_surface) for i in range(len(engList))]
-spanObjs = [word(spanList[i], window_surface) for i in range(len(spanList))]
+engObjs  = [word(i, window_surface) for i in engList]
+spanObjs = [word(i, window_surface) for i in spanList]
 
 def comienzo():
 
@@ -135,11 +133,13 @@ def comienzo():
                     #Back button
                     if event.ui_element == back_button:
                         #Exit out of this function, returns to where it was called, which is in mainScreen.
+                        # youMatch()
                         return
 
             # Here i am attempting to see if I can match the x,y of the cursor on button press to one of the words and print the word i clicked
             elif event.type == pygame.MOUSEBUTTONDOWN:
                 for i in range(len(randomSample)):
+
                     if engObjs[i].x+len(engObjs[i].word)*15 > mouse[0] > engObjs[i].x and engObjs[i].y+len(engObjs[i].word)+30  > mouse[1] > engObjs[i].y:
                         if count % 2:
                             word=engObjs[i].word
@@ -165,12 +165,10 @@ def comienzo():
                                 # del engObjs[i]
                                 # del spanObjs[i]
                             clickOne=False
+                            
                         print(spanObjs[i].word)
                         count+=1
-                # print(engObjs[0].x,engObjs[0].y)#testing to see if we clicked on the word
-                # print(engObjs[0].word)#printing the word we want to test our click on
-                print(pygame.mouse.get_pos())#getting the position of the mouse and printing it
-
+                    
             elif event.type == pygame.QUIT:
                 pygame.quit()
                 running = False
@@ -178,20 +176,19 @@ def comienzo():
 
             gameManager.process_events(event)
 
-
         if clickOne and word in spanList:
             pygame.draw.rect(window_surface, (0,255,0),(spanObjs[clickOneWord].x,spanObjs[clickOneWord].y,len(spanObjs[clickOneWord].word)*15,len(spanObjs[clickOneWord].word)+30))
         if clickOne and word in engList:
             pygame.draw.rect(window_surface, (0,255,0),(engObjs[clickOneWord].x,engObjs[clickOneWord].y,len(engObjs[clickOneWord].word)*15,len(engObjs[clickOneWord].word)+30))
 
-        # this calls the mover functions and updated draw functions of the objects every loop 
         for i in range(len(randomSample)):
             if i not in dontShow:
                 engObjs[i].draw()
                 engObjs[i].mover()
                 spanObjs[i].draw()
                 spanObjs[i].mover()
-        
+
+    
         if len(dontShow) == len(randomSample):
             youMatch()
 
