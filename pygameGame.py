@@ -15,11 +15,10 @@ def comienzo(screen, sampleSize, eng, span):
             self.y = random.randrange(20,600 - 20,1)
             self.vx = random.randrange(-3,3,1) #creats random direction and speed for the object
             self.vy = random.randrange(-3,3,1)
-            self.hitbox = (self.x + 17, self.y + 2, 31, 57)
 
-        def draw(self):
-            thing = pygame.font.SysFont('Cooper Black', 20).render(self.word, False, (105,105,105))
-            self.screen.blit(thing, (self.x, self.y))
+        def draw(self, fontColor = (105,105,105)):
+            renderText = pygame.font.SysFont('Cooper Black', 20).render(self.word, False, fontColor)
+            self.screen.blit(renderText, (self.x, self.y))
         def mover(self):
             self.x += self.vx
             self.y += self.vy
@@ -46,18 +45,24 @@ def comienzo(screen, sampleSize, eng, span):
                                             #Study manager
                                             manager=gameManager)
 
+    #To keep track of what word we click
     word = ''
+
+    #To know if we're on a first or second click
     count = 1
+
+    #Keep track of the index where the word was clicked
     clickOneWord = 0
-    clickOne = False
-    dontShow=[]
+
 
     clock = pygame.time.Clock()
     running = True
     while running:
         time_delta = clock.tick(40)
+        #Fill the screen with black
         screen.fill((0,0,0))
 
+        #Variable to determine coordinates on mouse click
         mouse = pygame.mouse.get_pos()
 
 
@@ -77,37 +82,89 @@ def comienzo(screen, sampleSize, eng, span):
 
             # Here i am attempting to see if I can match the x,y of the cursor on button press to one of the words and print the word i clicked
             elif event.type == pygame.MOUSEBUTTONDOWN:
-                for i in range(len(sampleSize)):
 
+                #Make sure we iterate through engObjs so it gets updated each time an element is deleted
+                for i in range(len(engObjs)):
+
+
+                    # This creates a box around the word to give a window for the user to click
+
+                    # If the x value of the word +length*15 > mouse's x position > x value od the word
+                    # and
+                    # if the y value of the word + 30 > mouse's y position > y value of the word
                     if engObjs[i].x+len(engObjs[i].word)*15 > mouse[0] > engObjs[i].x and engObjs[i].y+len(engObjs[i].word)+30  > mouse[1] > engObjs[i].y:
-                        if count % 2:
-                            word=engObjs[i].word
-                            clickOne=True
-                            clickOneWord=i
-                        else:
-                            if clickOneWord == i and word != engObjs[i].word:
-                                dontShow.append(i)
-                                # del engObjs[i]
-                                # del spanObjs[i]
-                            clickOne=False
 
-                        print(engObjs[i].word)
+                        #Update count
                         count+=1
-                    if spanObjs[i].x+len(spanObjs[i].word)*15 > mouse[0] > spanObjs[i].x and spanObjs[i].y+len(spanObjs[i].word)+30 > mouse[1] > spanObjs[i].y:
+
+                        #If we're on the first click
                         if count % 2:
-                            word=spanObjs[i].word
-                            clickOne=True
+
+                            #Keep track of the word
+                            word=engObjs[i].word
+
+                            #Keep track of i
                             clickOneWord=i
+
+                        #If we're on the second click
                         else:
-                            if clickOneWord == i and word != spanObjs[i].word:
-                                dontShow.append(i)
-                                # del engObjs[i]
-                                # del spanObjs[i]
-                            clickOne=False
-                            
-                        print(spanObjs[i].word)
+
+                            #If the spanish word (which was clicked first) has the same index as the english word just clicked
+                            #and
+                            #if the same english word wasn't clicked twice in a row
+                            if clickOneWord == i and word != engObjs[i].word:
+
+                                #Delete the objects from the list
+                                del engObjs[i]
+                                del spanObjs[i]
+
+
+                            #Break to update the size of engObjs to iterate through
+                            break
+                        
+                        #Debugging
+                        print(engObjs[i].word)
+
+
+
+                    # This creates a box around the word to give a window for the user to click
+
+                    # If the x value of the word +length*15 > mouse's x position > x value od the word
+                    # and
+                    # if the y value of the word + 30 > mouse's y position > y value of the word
+                    if spanObjs[i].x+len(spanObjs[i].word)*15 > mouse[0] > spanObjs[i].x and spanObjs[i].y+len(spanObjs[i].word)+30  > mouse[1] > spanObjs[i].y:
+
+                        #Update count
                         count+=1
-                    
+
+                        #If we're on the first click
+                        if count % 2:
+
+                            #Keep track of the word
+                            word=spanObjs[i].word
+
+                            #Keep track of i
+                            clickOneWord=i
+
+                        #If we're on the second click
+                        else:
+
+                            #If the spanish word (which was clicked first) has the same index as the spanish word just clicked
+                            #and
+                            #if the same spanish word wasn't clicked twice in a row
+                            if clickOneWord == i and word != spanObjs[i].word:
+
+                                #Delete the objects from the list
+                                del engObjs[i]
+                                del spanObjs[i]
+
+
+                            #Break to update the size of engObjs to iterate through
+                            break
+                            
+                        #Debugging
+                        print(spanObjs[i].word)
+
             elif event.type == pygame.QUIT:
                 pygame.quit()
                 running = False
@@ -115,20 +172,51 @@ def comienzo(screen, sampleSize, eng, span):
 
             gameManager.process_events(event)
 
-        if clickOne and word in span:
-            pygame.draw.rect(screen, (0,255,0),(spanObjs[clickOneWord].x,spanObjs[clickOneWord].y,len(spanObjs[clickOneWord].word)*15,len(spanObjs[clickOneWord].word)+30))
-        if clickOne and word in eng:
-            pygame.draw.rect(screen, (0,255,0),(engObjs[clickOneWord].x,engObjs[clickOneWord].y,len(engObjs[clickOneWord].word)*15,len(engObjs[clickOneWord].word)+30))
 
-        for i in range(len(sampleSize)):
-            if i not in dontShow:
-                engObjs[i].draw()
-                engObjs[i].mover()
+        #Initialize variables to keep track of index
+        spanWord=0
+        engWord=0
+
+        for i in range(len(engObjs)):
+
+            #If we're on the first click and the word is spanish
+            if count%2 and word in span:
+
+                #Find the word in the spanObjs list
+                if spanObjs[i].word == word:
+
+                    #Use this to track which index the word is in
+                    spanWord += i
+
+                    #Draw the word with a different color (yellow)
+                    spanObjs[i].draw((255,255,0))
+
+            #If we're on the first click and the word is english
+            if count%2 and word in eng:
+
+                #Find the word in the engObjs list
+                if engObjs[i].word == word:
+
+                    #Use this to track which index the word is in
+                    engWord += i
+
+                    #Draw the word with a different color (yellow)
+                    engObjs[i].draw((255,255,0))
+
+            #Draw all the other spanish words in the standard color
+            if i != spanWord:
                 spanObjs[i].draw()
-                spanObjs[i].mover()
 
-    
-        if len(dontShow) == len(sampleSize):
+            #Draw all the other english words in the standard color
+            if i != engWord:
+                engObjs[i].draw()
+            
+            #Despite which word is getting highlighted, the words will always move
+            engObjs[i].mover()
+            spanObjs[i].mover()
+
+        #If engObjs is empty, go to end screen
+        if not engObjs:
             youMatch(screen)
 
         #Update manager (for the buttons)
