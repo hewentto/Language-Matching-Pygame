@@ -73,8 +73,6 @@ def comienzo(screen, sampleSize, eng, span):
                                             manager=gameManager)
 
 
-
-
     clock = pygame.time.Clock()
     running = True
     while running:
@@ -134,6 +132,7 @@ def comienzo(screen, sampleSize, eng, span):
                                 #Create variable so we can delete without mattering what i equals
                                 deleteMeHere=i
 
+                                #Change the color
                                 engObjs[i].color = match_color
                                 spanObjs[i].color = match_color
 
@@ -158,10 +157,6 @@ def comienzo(screen, sampleSize, eng, span):
 
                             #Break to update the size of engObjs to iterate through
                             break
-                        
-                        #Debugging
-                        print(engObjs[i].word)
-
 
                     # This creates a box around the word to give a window for the user to click
                     # If the x value of the word +length*15 > mouse's x position > x value od the word
@@ -184,7 +179,7 @@ def comienzo(screen, sampleSize, eng, span):
                         #If we're on the second click
                         else:
 
-                            #If the spanish word (which was clicked first) has the same index as the spanish word just clicked
+                            #If the english word (which was clicked first) has the same index as the spanish word just clicked
                             #and
                             #if the same spanish word wasn't clicked twice in a row
                             if wordOneIndex == i and word != spanObjs[i].word:
@@ -192,6 +187,7 @@ def comienzo(screen, sampleSize, eng, span):
                                 #Create variable so we can delete without mattering what i equals
                                 deleteMeHere=i
 
+                                #Change the color
                                 engObjs[i].color = match_color
                                 spanObjs[i].color = match_color
 
@@ -215,14 +211,13 @@ def comienzo(screen, sampleSize, eng, span):
                             #Break to update the size of engObjs to iterate through
                             break
                             
-                        #Debugging
-                        print(spanObjs[i].word)
-
+            #'X' in the top right being clicked
             elif event.type == pygame.QUIT:
                 pygame.quit()
                 running = False
                 exit(0)
 
+            #Manager needs to know what happened
             gameManager.process_events(event)
 
 
@@ -232,6 +227,7 @@ def comienzo(screen, sampleSize, eng, span):
         #Check timer for the correct matches
         elapsed_time_correct = current_time - start_time_correct
 
+        #If the words have been discolored for longer than {seconds}
         if elapsed_time_correct > seconds:
 
             #If time is up, reset the correct start time to a giant number again
@@ -242,6 +238,7 @@ def comienzo(screen, sampleSize, eng, span):
         #Check timer for the incorrect matches
         elapsed_time_wrong = current_time - start_time_wrong
 
+        #If the words have been discolored for longer than {seconds}
         if elapsed_time_wrong > seconds:
 
             #If time is up, reset the correct start time to a giant number again
@@ -262,6 +259,7 @@ def comienzo(screen, sampleSize, eng, span):
         #Assign them to a number that won't be in the index
         engWord= -1
 
+        #Make sure variables are different for each for loop inside While True loop
         for k in range(len(engObjs)):
 
             #If we're on the first click and the word is spanish
