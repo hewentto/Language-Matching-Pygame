@@ -27,8 +27,8 @@ def comienzo(screen, sampleSize, eng, span):
     default_color = (105,105,105)
 
     #Initialize start time to be a giant number so the current time will never be greater
-    start_time_correct=9615952996
-    start_time_wrong=9615952996
+    start_time_correct = start_time_wrong = 9615952996
+   
 
     #How many seconds to display different color (wrong or right answers)
     seconds = .5
@@ -95,6 +95,7 @@ def comienzo(screen, sampleSize, eng, span):
                     #Back button
                     if event.ui_element == back_button:
                         #Exit out of this function, returns to where it was called, which is in mainScreen.
+                        # youMatch(screen)
                         return
 
             # Here i am attempting to see if I can match the x,y of the cursor on button press to one of the words and print the word i clicked
