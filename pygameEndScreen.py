@@ -9,17 +9,11 @@ def rotate(surface, angle):
 
 
 
-# Phrase of Matching
-def youMatch(screen, final_time):
 
-    #font needed to render the highscore text
-    font = pygame.freetype.SysFont('microsoftjhengheimicrosoftjhengheiuibold', 30)
-    #creating the reading/writing object
     
 
     
 #%%
-
     highscore = open(r'highscores.txt', 'r')
     print(highscore.read())
     highscore.close()
@@ -31,7 +25,9 @@ def youMatch(screen, final_time):
     highscore.close()
 
 #%%
-def youMatch(screen):
+def youMatch(screen, final_time):
+        #font needed to render the highscore text
+    font = pygame.freetype.SysFont('microsoftjhengheimicrosoftjhengheiuibold', 30)
 
     endManager = pygame_gui.UIManager((800, 600))
 

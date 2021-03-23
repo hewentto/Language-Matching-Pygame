@@ -316,7 +316,6 @@ def comienzo(screen, sampleSize, eng, span):
             elapsed_game_time = time.time() - timer_start
             
             youMatch(screen, elapsed_game_time)
-            youMatch(screen)
             return
 
         #Update manager (for the buttons)
