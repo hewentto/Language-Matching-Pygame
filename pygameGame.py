@@ -306,6 +306,7 @@ def comienzo(screen, sampleSize, eng, span):
         #If engObjs is empty, go to end screen
         if not engObjs:
             youMatch(screen)
+            return
 
         #Update manager (for the buttons)
         gameManager.update(time_delta)
