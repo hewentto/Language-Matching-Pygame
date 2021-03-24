@@ -5,10 +5,10 @@ from pygameGame import comienzo
 def display_study_words(engSpanDict,randomSample, screen, eng, span):
 
     # Header font is bigger
-    headerFont = pygame.font.SysFont('Cooper Black', 60)
+    headerFont = pygame.font.SysFont('microsoftjhengheimicrosoftjhengheiuibold', 60)
 
     # Every word that's not header
-    studyFont = pygame.font.SysFont('Cooper Black', 40)
+    studyFont = pygame.font.SysFont('microsoftjhengheimicrosoftjhengheiuibold', 40)
 
     #Separate manager for study words screen
     studyManager = pygame_gui.UIManager((800, 600))

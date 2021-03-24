@@ -8,6 +8,9 @@ from pygameEndScreen import youMatch
 
 
 def comienzo(screen, sampleSize, eng, span):
+    
+    #game timer that we will use to get highschores time
+    timer_start = time.time()
 
     #To keep track of what word we click
     word = ''
@@ -44,7 +47,7 @@ def comienzo(screen, sampleSize, eng, span):
             self.color = default_color
 
         def draw(self):
-            renderText = pygame.font.SysFont('Cooper Black', 20).render(self.word, False, self.color)
+            renderText = pygame.font.SysFont('microsoftjhengheimicrosoftjhengheiuibold', 20).render(self.word, False, self.color)
             self.screen.blit(renderText, (self.x, self.y))
         def mover(self):
             self.x += self.vx
@@ -76,6 +79,9 @@ def comienzo(screen, sampleSize, eng, span):
     clock = pygame.time.Clock()
     running = True
     while running:
+
+        
+
         time_delta = clock.tick(40)
         #Fill the screen with black
         screen.fill((0,0,0))
@@ -95,8 +101,9 @@ def comienzo(screen, sampleSize, eng, span):
                     #Back button
                     if event.ui_element == back_button:
                         #Exit out of this function, returns to where it was called, which is in mainScreen.
-                        # youMatch(screen)
-                        return
+                        elapsed_game_time = time.time() - timer_start
+                        youMatch(screen, elapsed_game_time)
+                        #return
 
             # Here i am attempting to see if I can match the x,y of the cursor on button press to one of the words and print the word i clicked
             elif event.type == pygame.MOUSEBUTTONDOWN:
@@ -305,7 +312,11 @@ def comienzo(screen, sampleSize, eng, span):
 
         #If engObjs is empty, go to end screen
         if not engObjs:
-            youMatch(screen)
+            #now we know how long the user was playing and can pass this to final end screen
+            elapsed_game_time = time.time() - timer_start
+            
+            youMatch(screen, elapsed_game_time)
+            return
 
         #Update manager (for the buttons)
         gameManager.update(time_delta)

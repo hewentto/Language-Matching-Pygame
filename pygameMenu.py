@@ -96,8 +96,9 @@ def main():
     pygame.init()
     pygame.font.init() # you have to call this at the start, 
                        # if you want to use this module.
+    print(pygame.font.get_fonts())
 
-    titleFont = pygame.font.SysFont('Cooper Black', 65)
+    titleFont = pygame.font.SysFont('microsoftjhengheimicrosoftjhengheiuibold', 65)
 
     width = 800
     height = 600
