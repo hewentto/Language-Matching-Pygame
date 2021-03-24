@@ -68,7 +68,7 @@ def mainScreen(d,randomSample,window_surface,engList,spanList, mainScreenManager
         #Denis changes
         #Scrolling background
         window_surface.blit(bg, (i, 0))
-        window_surface.blit(bg, (800+i, 0))
+        window_surface.blit(bg, (i+800, 0))
         #If image is at end, wrap image around
         if i == -800:
             window_surface.blit(bg, (800+i, 0))
@@ -96,7 +96,7 @@ def main():
     pygame.init()
     pygame.font.init() # you have to call this at the start, 
                        # if you want to use this module.
-    print(pygame.font.get_fonts())
+    # print(pygame.font.get_fonts())
 
     titleFont = pygame.font.SysFont('microsoftjhengheimicrosoftjhengheiuibold', 65)
 
@@ -134,7 +134,7 @@ def main():
                     'nose','cómo','yo','tu','lugar','el/la','ella']}
 
     # Select 12 indeces for english and spanish words
-    randomSample = random.sample(list(range(len(d['english']))), 12)
+    randomSample = random.sample(list(range(len(d['english']))), 2)
 
     # English list, Spanish list
     engList  = []
