@@ -63,6 +63,7 @@ def youMatch(screen, final_time):
         #Show user's time (rounded to 3 places)
         screen.blit(font.render("Your Time: {:0.3f}".format(final_time), False, (105,105,105)), (270, 500))
 
+        #Display what position they ranked (if any)
         topScore = font.render(highScores.displayTopScore, False, (105, 105, 105))
         screen.blit(topScore,(220, 10))
         

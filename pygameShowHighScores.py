@@ -67,9 +67,13 @@ def display_high_scores(screen):
 
         #First word starts at height 50
         wordHeight = 50
-        for x in highScores.getListOfScores():
-            #Username
-            # screen.blit(studyFont.render(eng[x], False, (0, 0, 0)),(95, wordHeight))
+
+        listOfNames = highScores.getListOfNames()
+        listOfScores = highScores.getListOfScores()
+        
+        for i in range(len(listOfScores)):
+            #Names
+            screen.blit(studyFont.render(listOfNames[i], False, (0, 0, 0)),(95, wordHeight))
 
             #Separating rows
             screen.blit(studyFont.render('____________________________________', False, (0, 0, 0)),(75, wordHeight))
@@ -79,7 +83,7 @@ def display_high_scores(screen):
             screen.blit(studyFont.render('|',False,(0,0,0)),(390, wordHeight+20))
 
             #High scores
-            screen.blit(studyFont.render(str(x)[:5], False, (0, 0, 0)),(515, wordHeight))
+            screen.blit(studyFont.render(str(listOfScores[i])[:5], False, (0, 0, 0)),(515, wordHeight))
 
             #Update wordHeight
             wordHeight += 50

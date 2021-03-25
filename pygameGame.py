@@ -35,7 +35,7 @@ def comienzo(screen, sampleSize, eng, span):
    
 
     #How many seconds to display different color (wrong or right answers)
-    seconds = .5
+    seconds = .3
 
     class word:
         def __init__(self, word, screen):
