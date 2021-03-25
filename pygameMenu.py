@@ -1,10 +1,10 @@
-import highScores
 import pygame
 import pygame_gui
 import pygameGame
 import pygameShowHighScores
 import pygameShowWords
 import random
+import highScores
 
 
 
@@ -91,14 +91,6 @@ def mainScreen(d,randomSample,window_surface,engList,spanList, mainScreenManager
 
         #Display title
         window_surface.blit(gameTitle,(95, 120))
-
-        # height = 20
-
-
-        # for doc in listOfDocs:
-        #     testText = titleFont.render('{}'.format(doc), False, (0, 0, 0))
-        #     window_surface.blit(testText,(155, height))
-        #     height+=50
 
         #Update button logic
         mainScreenManager.update(time_delta)

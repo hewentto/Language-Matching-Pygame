@@ -28,8 +28,6 @@ def display_study_words(engSpanDict,randomSample, screen, eng, span):
                                             #Study manager
                                             manager=studyManager)
 
-    #Initialize english/spanish lists
-
 
     while True:
         time_delta = clock.tick(60)/1000.0

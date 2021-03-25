@@ -10,8 +10,6 @@ def rotate(surface, angle):
     return rotated_surface, rotated_rect        
 
 
-
-
 def youMatch(screen, final_time):
 
     #Background code (might be temporary)
