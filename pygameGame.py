@@ -2,8 +2,9 @@ import pygame
 import pygame_gui
 import random
 import time
+import pygameEndScreen
+import highScores
 from pygame.mouse import get_pos
-from pygameEndScreen import youMatch
 
 
 
@@ -31,10 +32,14 @@ def comienzo(screen, sampleSize, eng, span):
 
     #Initialize start time to be a giant number so the current time will never be greater
     start_time_correct = start_time_wrong = 9615952996
+
+    #Font for the timer
+    timerFont = pygame.font.SysFont('microsoftjhengheimicrosoftjhengheiuibold', 22)
+
    
 
     #How many seconds to display different color (wrong or right answers)
-    seconds = .5
+    seconds = .3
 
     class word:
         def __init__(self, word, screen):
@@ -102,8 +107,8 @@ def comienzo(screen, sampleSize, eng, span):
                     if event.ui_element == back_button:
                         #Exit out of this function, returns to where it was called, which is in mainScreen.
                         elapsed_game_time = time.time() - timer_start
-                        youMatch(screen, elapsed_game_time)
-                        #return
+                        # youMatch(screen, elapsed_game_time)
+                        return
 
             # Here i am attempting to see if I can match the x,y of the cursor on button press to one of the words and print the word i clicked
             elif event.type == pygame.MOUSEBUTTONDOWN:
@@ -310,13 +315,24 @@ def comienzo(screen, sampleSize, eng, span):
             engObjs[k].mover()
             spanObjs[k].mover()
 
+        #now we know how long the user was playing and can pass this to final end screen
+        elapsed_game_time = time.time() - timer_start
+
         #If engObjs is empty, go to end screen
         if not engObjs:
-            #now we know how long the user was playing and can pass this to final end screen
-            elapsed_game_time = time.time() - timer_start
+
+            #Check to see if time is top 10
+            highScores.addScore(elapsed_game_time, screen)
+                        
+            #Go to end screen
+            pygameEndScreen.youMatch(screen, elapsed_game_time)
             
-            youMatch(screen, elapsed_game_time)
+            #We return here so when the end screen returns, this will make it return again, resulting in the main menu
             return
+
+        screen.blit(timerFont.render("{:0.3f}".format(elapsed_game_time), False, (105,105,105)), (720, 20))
+
+
 
         #Update manager (for the buttons)
         gameManager.update(time_delta)
