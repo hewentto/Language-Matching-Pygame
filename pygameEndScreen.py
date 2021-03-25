@@ -1,5 +1,8 @@
 import pygame
 import pygame_gui
+import highScores
+
+
 
 def rotate(surface, angle):
     rotated_surface = pygame.transform.rotozoom(surface, angle, 1)
@@ -8,17 +11,8 @@ def rotate(surface, angle):
 
 
 
-def youMatch(screen, final_time):
 
-    highscore = open(r'highscores.txt', 'r')
-    print(highscore.read())
-    highscore.close()
-    highscore = open(r'highscores.txt', 'a')
-    highscore.write(str(final_time) + '\n')
-    highscore.close()
-    highscore = open(r'highscores.txt', 'r')
-    print(highscore.read())
-    highscore.close()
+def youMatch(screen, final_time):
 
     #Background code (might be temporary)
     bg_img = pygame.image.load('worldmap1024.jpg')
@@ -67,7 +61,10 @@ def youMatch(screen, final_time):
         screen.blit(bg, (0,0))
 
         #Show user's time (rounded to 3 places)
-        screen.blit(font.render("Your Time: {:0.3f}".format(final_time), False, (105,105,105)), (300, 500))
+        screen.blit(font.render("Your Time: {:0.3f}".format(final_time), False, (105,105,105)), (270, 500))
+
+        topScore = font.render(highScores.displayTopScore, False, (105, 105, 105))
+        screen.blit(topScore,(220, 10))
         
         #Rotate win message
         angle += 1

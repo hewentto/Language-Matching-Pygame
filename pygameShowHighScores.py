@@ -1,8 +1,8 @@
 import pygame
 import pygame_gui
-import pygameGame
+import highScores
 
-def display_study_words(engSpanDict,randomSample, screen, eng, span):
+def display_high_scores(screen):
 
     # Header font is bigger
     headerFont = pygame.font.SysFont('microsoftjhengheimicrosoftjhengheiuibold', 60)
@@ -11,7 +11,7 @@ def display_study_words(engSpanDict,randomSample, screen, eng, span):
     studyFont = pygame.font.SysFont('microsoftjhengheimicrosoftjhengheiuibold', 40)
 
     #Separate manager for study words screen
-    studyManager = pygame_gui.UIManager((800, 600))
+    scoresManager = pygame_gui.UIManager((800, 600))
 
     # Clock needed to update manager (don't know why.)
     clock = pygame.time.Clock()
@@ -20,15 +20,7 @@ def display_study_words(engSpanDict,randomSample, screen, eng, span):
     back_button = pygame_gui.elements.UIButton(relative_rect=pygame.Rect((50, 545), (150, 50)),
                                             text='Back',
                                             #Study manager
-                                            manager=studyManager)
-
-    #Start the game from the study page
-    start_from_study_button = pygame_gui.elements.UIButton(relative_rect=pygame.Rect((600, 545), (150, 50)),
-                                            text='Start',
-                                            #Study manager
-                                            manager=studyManager)
-
-    #Initialize english/spanish lists
+                                            manager=scoresManager)
 
 
     while True:
@@ -55,52 +47,47 @@ def display_study_words(engSpanDict,randomSample, screen, eng, span):
                         #Exit out of this function, returns to where it was called, which is in mainScreen.
                         return
 
-                    #Start button
-                    if event.ui_element == start_from_study_button:
-                        #Start the game
-                        pygameGame.comienzo(screen, randomSample, eng, span)
-                        return
 
-            #Update studyManager
-            studyManager.process_events(event)
+            #Update scoresManager
+            scoresManager.process_events(event)
 
-        #Display English header
-        screen.blit(headerFont.render('English', False, (0, 0, 0)),(95, -10))
+        #Display Names header
+        screen.blit(headerFont.render('Names', False, (0, 0, 0)),(95, -10))
 
         #Display separating pipes
         screen.blit(studyFont.render('|', False, (0, 0, 0)),(390, 0))
         #Overlap to look clean
         screen.blit(studyFont.render('|', False, (0, 0, 0)),(390, 20))
 
-        #Display Spanish header
-        screen.blit(headerFont.render('Spanish', False, (0, 0, 0)),(515, -10))
+        #Display Scores header
+        screen.blit(headerFont.render('Scores', False, (0, 0, 0)),(515, -10))
 
         #Display separating rows
-        screen.blit(studyFont.render('________________________________', False, (0, 0, 0)),(75, 8))
+        screen.blit(studyFont.render('____________________________________', False, (0, 0, 0)),(75, 8))
 
         #First word starts at height 50
         wordHeight = 50
-        for x in range(len(randomSample)):
-            #English word
-            screen.blit(studyFont.render(eng[x], False, (0, 0, 0)),(95, wordHeight))
+        for x in highScores.getListOfScores():
+            #Username
+            # screen.blit(studyFont.render(eng[x], False, (0, 0, 0)),(95, wordHeight))
 
             #Separating rows
-            screen.blit(studyFont.render('________________________________', False, (0, 0, 0)),(75, wordHeight))
+            screen.blit(studyFont.render('____________________________________', False, (0, 0, 0)),(75, wordHeight))
 
             #Separating columns
             screen.blit(studyFont.render('|',False,(0,0,0)),(390, wordHeight))
             screen.blit(studyFont.render('|',False,(0,0,0)),(390, wordHeight+20))
 
-            #Spanish word
-            screen.blit(studyFont.render(span[x], False, (0, 0, 0)),(515, wordHeight))
+            #High scores
+            screen.blit(studyFont.render(str(x)[:5], False, (0, 0, 0)),(515, wordHeight))
 
             #Update wordHeight
-            wordHeight += 40
+            wordHeight += 50
 
         #Update manager (for the buttons)
-        studyManager.update(time_delta)
+        scoresManager.update(time_delta)
         #Display buttons
-        studyManager.draw_ui(screen)
+        scoresManager.draw_ui(screen)
 
         #Update the display of the pygame
         pygame.display.update()
