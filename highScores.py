@@ -4,6 +4,12 @@ import firebase_admin
 from firebase_admin import credentials
 from firebase_admin import firestore
 
+pygame.init()
+COLOR_INACTIVE = (0,0,0)
+COLOR_ACTIVE = pygame.Color('lightskyblue3')
+HIGHSCORE_FONT = pygame.font.SysFont('microsoftjhengheimicrosoftjhengheiuibold', 60)
+INITIALS_FONT = pygame.font.SysFont('microsoftjhengheimicrosoftjhengheiuibold', 30)
+
 #Keep the globals empty/False
 displayTopScore=''
 done = False
@@ -87,11 +93,6 @@ def addScore(score, screen):
             db.collection(u'highscores').document(u'{}'.format(str(max(listOfScores)))).delete()
 
 
-pygame.init()
-COLOR_INACTIVE = (0,0,0)
-COLOR_ACTIVE = pygame.Color('lightskyblue3')
-HIGHSCORE_FONT = pygame.font.SysFont('microsoftjhengheimicrosoftjhengheiuibold', 60)
-INITIALS_FONT = pygame.font.SysFont('microsoftjhengheimicrosoftjhengheiuibold', 30)
 
 class InputBox:
 

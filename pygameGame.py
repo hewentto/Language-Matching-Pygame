@@ -4,8 +4,6 @@ import random
 import time
 import pygameEndScreen
 import highScores
-from pygame.mouse import get_pos
-
 
 
 def comienzo(screen, sampleSize, eng, span):
@@ -330,9 +328,8 @@ def comienzo(screen, sampleSize, eng, span):
             #We return here so when the end screen returns, this will make it return again, resulting in the main menu
             return
 
+        #Display timer
         screen.blit(timerFont.render("{:0.3f}".format(elapsed_game_time), False, (105,105,105)), (720, 20))
-
-
 
         #Update manager (for the buttons)
         gameManager.update(time_delta)
