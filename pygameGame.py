@@ -32,6 +32,10 @@ def comienzo(screen, sampleSize, eng, span):
 
     #Initialize start time to be a giant number so the current time will never be greater
     start_time_correct = start_time_wrong = 9615952996
+
+    #Font for the timer
+    timerFont = pygame.font.SysFont('microsoftjhengheimicrosoftjhengheiuibold', 22)
+
    
 
     #How many seconds to display different color (wrong or right answers)
@@ -311,10 +315,11 @@ def comienzo(screen, sampleSize, eng, span):
             engObjs[k].mover()
             spanObjs[k].mover()
 
+        #now we know how long the user was playing and can pass this to final end screen
+        elapsed_game_time = time.time() - timer_start
+
         #If engObjs is empty, go to end screen
         if not engObjs:
-            #now we know how long the user was playing and can pass this to final end screen
-            elapsed_game_time = time.time() - timer_start
 
             #Check to see if time is top 10
             highScores.addScore(elapsed_game_time, screen)
@@ -324,6 +329,10 @@ def comienzo(screen, sampleSize, eng, span):
             
             #We return here so when the end screen returns, this will make it return again, resulting in the main menu
             return
+
+        screen.blit(timerFont.render("{:0.3f}".format(elapsed_game_time), False, (105,105,105)), (720, 20))
+
+
 
         #Update manager (for the buttons)
         gameManager.update(time_delta)
