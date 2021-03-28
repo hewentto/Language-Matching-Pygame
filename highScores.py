@@ -36,7 +36,7 @@ def getListOfScores():
     docs = users_ref.stream()
 
     #Store results in a list
-    return [float(doc.id) for doc in docs]
+    return sorted([float(doc.id) for doc in docs])
 
 def getListOfNames():
     #Get the connection to the firebase cloud
