@@ -128,7 +128,7 @@ def main():
     mainScreenManager = pygame_gui.UIManager((width, height))
     first_sound = pygame.mixer.Sound("crash.mp3")
 
-    backgroundMusic = pygame.mixer.music.load("background.mp3")
+    backgroundMusic = pygame.mixer.music.load("Audio/background.mp3")
     pygame.mixer.music.set_volume(0.06)
     pygame.mixer.music.play(-1)
 
@@ -147,7 +147,7 @@ def main():
                     'nose','cómo','yo','tu','lugar','el/la','ella']}
 
     # Select 12 indeces for english and spanish words
-    randomSample = random.sample(list(range(len(d['english']))), 2)
+    randomSample = random.sample(list(range(len(d['english']))), 12)
 
     # English list, Spanish list
     engList  = []
