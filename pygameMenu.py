@@ -1,26 +1,32 @@
 import pygame
 import pygame_gui
+import pygameGame
+import pygameShowHighScores
+import pygameShowWords
 import random
-from pygameShowWords import display_study_words
-from pygameGame import comienzo
-
+import highScores
 
 
 
 def mainScreen(d,randomSample,window_surface,engList,spanList, mainScreenManager, gameTitle, bg):
 
 
-    start_button = pygame_gui.elements.UIButton(relative_rect=pygame.Rect((330, 275), (150, 50)),
+    start_button = pygame_gui.elements.UIButton(relative_rect=pygame.Rect((330, 280), (150, 50)),
                                                 text='Start!',
                                                 #Place it in main manager
                                                 manager=mainScreenManager)
 
-    show_words_button = pygame_gui.elements.UIButton(relative_rect=pygame.Rect((330, 375), (150, 50)),
+    show_words_button = pygame_gui.elements.UIButton(relative_rect=pygame.Rect((330, 360), (150, 50)),
                                                 text='Study Words',
                                                 #Place it in main manager
                                                 manager=mainScreenManager)
 
-    exit_button = pygame_gui.elements.UIButton(relative_rect=pygame.Rect((330, 475), (150, 50)),
+    show_scores_button = pygame_gui.elements.UIButton(relative_rect=pygame.Rect((330, 440), (150, 50)),
+                                                text='High Scores',
+                                                #Place it in main manager
+                                                manager=mainScreenManager)
+
+    exit_button = pygame_gui.elements.UIButton(relative_rect=pygame.Rect((330, 520), (150, 50)),
                                                 text='Exit',
                                                 #Place it in main manager
                                                 manager=mainScreenManager)
@@ -28,6 +34,8 @@ def mainScreen(d,randomSample,window_surface,engList,spanList, mainScreenManager
     #Create clock
     clock = pygame.time.Clock()
     is_running = True
+
+    titleFont = pygame.font.SysFont('microsoftjhengheimicrosoftjhengheiuibold', 65)
 
     #Background scrolling parameters
 
@@ -53,10 +61,13 @@ def mainScreen(d,randomSample,window_surface,engList,spanList, mainScreenManager
                 if event.user_type == pygame_gui.UI_BUTTON_PRESSED:
                     # If start button, start
                     if event.ui_element == start_button:
-                        comienzo(window_surface, randomSample, engList, spanList)
+                        pygameGame.comienzo(window_surface, randomSample, engList, spanList)
                     # If study button, study
                     if event.ui_element == show_words_button:
-                        display_study_words(d,randomSample,window_surface,engList,spanList)
+                        pygameShowWords.display_study_words(d,randomSample,window_surface,engList,spanList)
+                    # If study button, study
+                    if event.ui_element == show_scores_button:
+                        pygameShowHighScores.display_high_scores(window_surface)
                     # If exit, exit
                     if event.ui_element == exit_button:
                         is_running = False
@@ -68,7 +79,7 @@ def mainScreen(d,randomSample,window_surface,engList,spanList, mainScreenManager
         #Denis changes
         #Scrolling background
         window_surface.blit(bg, (i, 0))
-        window_surface.blit(bg, (800+i, 0))
+        window_surface.blit(bg, (i+800, 0))
         #If image is at end, wrap image around
         if i == -800:
             window_surface.blit(bg, (800+i, 0))
@@ -80,6 +91,7 @@ def mainScreen(d,randomSample,window_surface,engList,spanList, mainScreenManager
 
         #Display title
         window_surface.blit(gameTitle,(95, 120))
+
         #Update button logic
         mainScreenManager.update(time_delta)
         #Display buttons
@@ -96,8 +108,9 @@ def main():
     pygame.init()
     pygame.font.init() # you have to call this at the start, 
                        # if you want to use this module.
+    # print(pygame.font.get_fonts())
 
-    titleFont = pygame.font.SysFont('Cooper Black', 65)
+    titleFont = pygame.font.SysFont('microsoftjhengheimicrosoftjhengheiuibold', 65)
 
     width = 800
     height = 600
@@ -105,6 +118,7 @@ def main():
     pygame.display.set_caption('Spanglish Matching')
     window_surface = pygame.display.set_mode((width, height),0,32)
     gameTitle = titleFont.render('Spanglish Matching!', False, (0, 0, 0))
+
 
     #Denis Changes
     bg_img = pygame.image.load('worldmap1024.jpg')
@@ -114,7 +128,7 @@ def main():
     mainScreenManager = pygame_gui.UIManager((width, height))
     first_sound = pygame.mixer.Sound("crash.mp3")
 
-    backgroundMusic = pygame.mixer.music.load("background.mp3")
+    backgroundMusic = pygame.mixer.music.load("Audio/background.mp3")
     pygame.mixer.music.set_volume(0.06)
     pygame.mixer.music.play(-1)
 
@@ -144,6 +158,9 @@ def main():
     for x in randomSample:
         engList.append( d['english'][x])
         spanList.append(d['spanish'][x])
+
+    highScores.fireBase()
+
 
     #Call the main screen
     mainScreen(d,randomSample,window_surface,engList,spanList, mainScreenManager, gameTitle, bg)
