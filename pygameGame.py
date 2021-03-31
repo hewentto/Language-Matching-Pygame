@@ -26,7 +26,7 @@ def comienzo(screen, sampleSize, eng, span):
     #Colors
     match_color = (0,255,0)
     wrong_color = (255,0,0)
-    default_color = (255,128,0)
+    default_color = (105,105,105)
 
     #Initialize start time to be a giant number so the current time will never be greater
     start_time_correct = start_time_wrong = 9615952996
@@ -49,10 +49,7 @@ def comienzo(screen, sampleSize, eng, span):
             self.x = random.randrange(20,800 - 20,1) #creates a random position for x and y within the screen range for the object
             self.y = random.randrange(20,600 - 20,1)
             self.vx = random.randrange(-3,3,1) #creats random direction and speed for the object
-            if self.vx != 0:
-                self.vy = random.randrange(-3,3,1)
-            else:
-                self.vy = random.randrange(1,3,1)
+            self.vy = random.randrange(-3,3,1)
             self.color = default_color
             self.size = [(pygame.font.SysFont('microsoftjhengheimicrosoftjhengheiuibold', 20).size(self.word)[0] + easy_click), 
                             (pygame.font.SysFont('microsoftjhengheimicrosoftjhengheiuibold', 20).size(self.word)[1] + easy_click)]
@@ -61,6 +58,8 @@ def comienzo(screen, sampleSize, eng, span):
         def draw(self):
             renderText = pygame.font.SysFont('microsoftjhengheimicrosoftjhengheiuibold', 20).render(self.word, True, self.color)
             self.screen.blit(renderText, (self.x, self.y))
+
+            # Show the hitboxes
             # pygame.draw.rect(self.screen, (255, 255, 255), self.hitbox, 1)
         def mover(self):
             self.x += self.vx
@@ -92,10 +91,6 @@ def comienzo(screen, sampleSize, eng, span):
                                             manager=gameManager)
 
 
-    #Background code (might be temporary)
-    bg_img = pygame.image.load('blue-gradient-background-1.png')
-    bg = pygame.transform.scale(bg_img, (800, 600))
-
     clock = pygame.time.Clock()
     running = True
     while running:
@@ -103,8 +98,8 @@ def comienzo(screen, sampleSize, eng, span):
         
 
         time_delta = clock.tick(40)
-        #Show background        
-        screen.blit(bg, (0,0))
+        #Fill the screen with black
+        screen.fill((0,0,0))
 
         #Variable to determine coordinates on mouse click
         mouse = pygame.mouse.get_pos()

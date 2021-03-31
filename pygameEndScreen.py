@@ -62,7 +62,7 @@ def youMatch(screen, final_time):
         screen.blit(font.render("Your Time: {:0.3f}".format(final_time), False, (0,0,0)), (270, 500))
 
         #Display what position they ranked (if any)
-        topScore = font.render(highScores.displayTopScore, False, (0,0,0))
+        topScore = font.render(highScores.displayTopScore, False, (105, 105, 105))
         screen.blit(topScore,(220, 10))
         
         #Rotate win message

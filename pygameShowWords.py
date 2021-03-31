@@ -96,7 +96,7 @@ def display_study_words(engSpanDict,randomSample, screen, eng, span):
                                     prueba = pygame.mixer.Sound("Audio/el la.mp3")
                                 else:
                                     prueba = pygame.mixer.Sound("Audio/" + span[x] + ".mp3")
-                                prueba.set_volume(0.30) 
+                                prueba.set_volume(0.10) 
                                 prueba.play(0)
 
                     #Start button
