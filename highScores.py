@@ -153,7 +153,7 @@ def getInputBox(screen, final_time):
     enterInitialsText = INITIALS_FONT.render('Enter Initials:', False, (0, 0, 0))
 
     #Background image
-    bg_img = pygame.image.load('worldmap1024.jpg')
+    bg_img = pygame.image.load('otherbackground.jpg')
     bg = pygame.transform.scale(bg_img, (800, 600))
 
     #Referance to the global variables
