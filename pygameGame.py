@@ -58,7 +58,9 @@ def comienzo(screen, sampleSize, eng, span):
         def draw(self):
             renderText = pygame.font.SysFont('microsoftjhengheimicrosoftjhengheiuibold', 20).render(self.word, True, self.color)
             self.screen.blit(renderText, (self.x, self.y))
-            pygame.draw.rect(self.screen, (255, 255, 255), self.hitbox, 1)
+
+            # Show the hitboxes
+            # pygame.draw.rect(self.screen, (255, 255, 255), self.hitbox, 1)
         def mover(self):
             self.x += self.vx
             self.y += self.vy
