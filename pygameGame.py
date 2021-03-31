@@ -39,6 +39,9 @@ def comienzo(screen, sampleSize, eng, span):
     #How many seconds to display different color (wrong or right answers)
     seconds = .3
 
+    # How far off the mouse can be
+    easy_click = 10
+
     class word:
         def __init__(self, word, screen):
             self.word = word
@@ -48,25 +51,32 @@ def comienzo(screen, sampleSize, eng, span):
             self.vx = random.randrange(-3,3,1) #creats random direction and speed for the object
             self.vy = random.randrange(-3,3,1)
             self.color = default_color
+            self.size = [(pygame.font.SysFont('microsoftjhengheimicrosoftjhengheiuibold', 20).size(self.word)[0] + easy_click), 
+                            (pygame.font.SysFont('microsoftjhengheimicrosoftjhengheiuibold', 20).size(self.word)[1] + easy_click)]
+            self.hitbox = pygame.Rect(self.x - easy_click, self.y - easy_click, self.size[0] + easy_click, self.size[1] + easy_click)
 
         def draw(self):
-            renderText = pygame.font.SysFont('microsoftjhengheimicrosoftjhengheiuibold', 20).render(self.word, False, self.color)
+            renderText = pygame.font.SysFont('microsoftjhengheimicrosoftjhengheiuibold', 20).render(self.word, True, self.color)
             self.screen.blit(renderText, (self.x, self.y))
+            pygame.draw.rect(self.screen, (255, 255, 255), self.hitbox, 1)
         def mover(self):
             self.x += self.vx
             self.y += self.vy
-            if self.x >= 790:
+            if self.x + self.size[0] >= 800:
                 self.vx *= -1
-                self.x = 790
-            if self.x <= 0:
+                self.x = 800 - self.size[0]
+            if self.x - easy_click <= 0:
                 self.vx *= -1
-                self.x = 0
-            if self.y >= 600:
+                self.x = easy_click
+            if self.y + self.size[1] >= 600:
                 self.vy *= -1
-                self.y = 600
-            if self.y <= 0:
+                self.y = 600 - self.size[1]
+            if self.y - easy_click <= 0:
                 self.vy *= -1
-                self.y = 0
+                self.y = easy_click
+
+            # Update the hit box location
+            self.hitbox.update(self.x - easy_click, self.y - easy_click, self.size[0] + easy_click, self.size[1] + easy_click)
 
     engObjs  = [word(i, screen) for i in eng]
     spanObjs = [word(i, screen) for i in span]
@@ -118,7 +128,8 @@ def comienzo(screen, sampleSize, eng, span):
                     # If the x value of the word +length*15 > mouse's x position > x value od the word
                     # and
                     # if the y value of the word + 30 > mouse's y position > y value of the word
-                    if engObjs[i].x+len(engObjs[i].word)*15 > mouse[0] > engObjs[i].x and engObjs[i].y+len(engObjs[i].word)+30  > mouse[1] > engObjs[i].y:
+                    #if engObjs[i].x+len(engObjs[i].word)*15 > mouse[0] > engObjs[i].x and engObjs[i].y+len(engObjs[i].word)+30  > mouse[1] > engObjs[i].y:
+                    if engObjs[i].hitbox.collidepoint(mouse):
 
                         #Update count
                         count+=1
@@ -173,7 +184,8 @@ def comienzo(screen, sampleSize, eng, span):
                     # If the x value of the word +length*15 > mouse's x position > x value od the word
                     # and
                     # if the y value of the word + 30 > mouse's y position > y value of the word
-                    if spanObjs[i].x+len(spanObjs[i].word)*15 > mouse[0] > spanObjs[i].x and spanObjs[i].y+len(spanObjs[i].word)+30  > mouse[1] > spanObjs[i].y:
+                    #if spanObjs[i].x+len(spanObjs[i].word)*15 > mouse[0] > spanObjs[i].x and spanObjs[i].y+len(spanObjs[i].word)+30  > mouse[1] > spanObjs[i].y:
+                    if spanObjs[i].hitbox.collidepoint(mouse):
 
                         #Update count
                         count+=1
