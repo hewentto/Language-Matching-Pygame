@@ -100,7 +100,7 @@ class InputBox:
         self.rect = pygame.Rect(x, y, w, h)
         self.color = COLOR_ACTIVE
         self.text = text
-        self.txt_surface = INITIALS_FONT.render(text, True, (105,105,105))
+        self.txt_surface = INITIALS_FONT.render(text, True, (0,0,0))
         self.active = False
 
     def handle_event(self, event):
@@ -127,7 +127,7 @@ class InputBox:
                 else:
                     self.text += event.unicode
                 # Re-render the text.
-                self.txt_surface = INITIALS_FONT.render(self.text, True, (105,105,105))
+                self.txt_surface = INITIALS_FONT.render(self.text, True, (0,0,0))
 
     def update(self):
         # Resize the box if the text is too long.
@@ -149,11 +149,11 @@ def getInputBox(screen, final_time):
     box = InputBox(300, 300, 140, 50)
 
     #Text to display on screen
-    highScoreText = HIGHSCORE_FONT.render('High Score!', False, (105, 105, 105))
-    enterInitialsText = INITIALS_FONT.render('Enter Initials:', False, (105, 105, 105))
+    highScoreText = HIGHSCORE_FONT.render('High Score!', False, (0, 0, 0))
+    enterInitialsText = INITIALS_FONT.render('Enter Initials:', False, (0, 0, 0))
 
     #Background image
-    bg_img = pygame.image.load('worldmap1024.jpg')
+    bg_img = pygame.image.load('otherbackground.jpg')
     bg = pygame.transform.scale(bg_img, (800, 600))
 
     #Referance to the global variables
@@ -175,7 +175,7 @@ def getInputBox(screen, final_time):
         screen.blit(bg, (0,0))
         screen.blit(highScoreText,(210, 10))
         screen.blit(enterInitialsText,(300, 230))
-        screen.blit(INITIALS_FONT.render("Your Time: {:0.3f}".format(final_time), False, (105,105,105)), (270, 500))
+        screen.blit(INITIALS_FONT.render("Your Time: {:0.3f}".format(final_time), False, (0,0,0)), (270, 500))
 
         #Keep the text inside the box updated
         box.update()

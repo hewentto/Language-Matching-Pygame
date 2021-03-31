@@ -13,7 +13,7 @@ def rotate(surface, angle):
 def youMatch(screen, final_time):
 
     #Background code (might be temporary)
-    bg_img = pygame.image.load('worldmap1024.jpg')
+    bg_img = pygame.image.load('otherbackground.jpg')
     bg = pygame.transform.scale(bg_img, (800, 600))
     
     # font needed to render the highscore text
@@ -33,7 +33,7 @@ def youMatch(screen, final_time):
     angle = 0
 
     #Win message
-    phrase = pygame.font.SysFont('microsoftjhengheimicrosoftjhengheiuibold', size).render("Good Job!", False, (105,105,105))
+    phrase = pygame.font.SysFont('microsoftjhengheimicrosoftjhengheiuibold', size).render("Good Job!", False, (0,0,0))
    
     while True:
         time_delta = clock.tick(40)
@@ -59,7 +59,7 @@ def youMatch(screen, final_time):
         screen.blit(bg, (0,0))
 
         #Show user's time (rounded to 3 places)
-        screen.blit(font.render("Your Time: {:0.3f}".format(final_time), False, (105,105,105)), (270, 500))
+        screen.blit(font.render("Your Time: {:0.3f}".format(final_time), False, (0,0,0)), (270, 500))
 
         #Display what position they ranked (if any)
         topScore = font.render(highScores.displayTopScore, False, (105, 105, 105))
